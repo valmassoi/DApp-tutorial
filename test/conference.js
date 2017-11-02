@@ -52,4 +52,28 @@ contract('Conference', (accounts) => {
       }).catch(done);
     }).catch(done);
   });
+  it("Should issue a refund by owner only", (done) => {
+    Conference.deployed().then((conference) => {
+      var ticketPrice = web3.toWei(.05, 'ether');
+      var initialBalance = web3.eth.getBalance(conference.address).toNumber();
+      conference.buyTicket({from: accounts[1], value: ticketPrice }).then(() => {
+        var newBalance = web3.eth.getBalance(conference.address).toNumber();
+        var difference = newBalance - initialBalance;
+        assert.equal(difference, ticketPrice, "Difference should be what was sent");
+        // Now try to issue refund as second user - should fail
+        return conference.refundTicket(accounts[1], ticketPrice, {from: accounts[1]});
+      }).then(() => {
+        var currentBalance = web3.eth.getBalance(conference.address).toNumber();
+        var income = ticketPrice * 1
+        var cumulatedBalance = initialBalance + income // no refund
+        assert.equal(currentBalance, cumulatedBalance, "Balance should be unchanged");
+        // Now try to issue refund as organizer/owner - should work
+        return conference.refundTicket(accounts[1], ticketPrice, {from: accounts[0]});
+      }).then(() => {
+        var postRefundBalance = web3.eth.getBalance(conference.address).toNumber();
+        assert.equal(postRefundBalance, initialBalance, "Balance should be initial balance");
+        done();
+      }).catch(done);
+    }).catch(done);
+  });
 });
