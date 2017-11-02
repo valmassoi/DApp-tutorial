@@ -1,7 +1,7 @@
 var Conference = artifacts.require("./Conference.sol");
 
-contract('Conference', function(accounts) {
-  it("Initial conference settings should match", function(done) {
+contract('Conference', (accounts) => {
+  it("Initial conference settings should match", (done) => {
     Conference.deployed().then((conference) => {
       conference.quota.call().then((quota) => {
         assert.equal(quota, 500, "Quota doesn't match!")
@@ -16,7 +16,7 @@ contract('Conference', function(accounts) {
       }).catch(done);
     }).catch(done);
   });
-  it("Should update quota", function(done) {
+  it("Should update quota", (done) => {
     Conference.deployed().then((conference) => {
       conference.quota.call().then((quota) => {
         assert.equal(quota, 500, "Quota doesn't match!");
@@ -32,7 +32,7 @@ contract('Conference', function(accounts) {
       }).catch(done);
     }).catch(done);
   });
-  it("Should let you buy a ticket", function(done) {
+  it("Should let you buy a ticket", (done) => {
     Conference.deployed().then((conference) => {
       var ticketPrice = web3.toWei(.05, 'ether'); // Web3.js provides convenience methods for converting ether to/from Wei
       // recommend keeping things in Wei in your code until users see it
