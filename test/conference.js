@@ -16,4 +16,20 @@ contract('Conference', function(accounts) {
       }).catch(done);
     }).catch(done);
   });
+  it("Should update quota", function(done) {
+    Conference.deployed().then((conference) => {
+      conference.quota.call().then((quota) => {
+        assert.equal(quota, 500, "Quota doesn't match!");
+      }).then(() => {
+        return conference.changeQuota(300);
+      }).then((result) => {
+        console.log(result);
+        // printed will be a long hex, the transaction hash
+        return conference.quota.call();
+      }).then((quota) => {
+        assert.equal(quota, 300, "New quota is not correct!");
+        done();
+      }).catch(done);
+    }).catch(done);
+  });
 });
