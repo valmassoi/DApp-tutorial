@@ -23,7 +23,7 @@ contract('Conference', (accounts) => {
       }).then(() => {
         return conference.changeQuota(300);
       }).then((result) => {
-        console.log(result);
+        // console.log(result);
         // printed will be a long hex, the transaction hash
         return conference.quota.call();
       }).then((quota) => {
@@ -77,3 +77,13 @@ contract('Conference', (accounts) => {
     }).catch(done);
   });
 });
+
+// var event = conference.allEvents().watch({}, '');
+// or use conference.Deposit() or .Refund()
+// event.watch((error, result) => {
+//   if (error) {
+//     console.log("Error: " + error);
+//   } else {
+//     console.log("Event: " + result.event);
+//   }
+// });
