@@ -1,0 +1,25 @@
+{
+  "name": "dapp-tutorial",
+  "version": "1.0.0",
+  "description": "[Tutorial](https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4) with updates to Truffle v4.0.1",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valmassoi/DApp-tutorial.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/valmassoi/DApp-tutorial/issues"
+  },
+  "homepage": "https://github.com/valmassoi/DApp-tutorial#readme",
+  "dependencies": {
+    "web3"
+  }
+}
