@@ -32,4 +32,24 @@ contract('Conference', function(accounts) {
       }).catch(done);
     }).catch(done);
   });
+  it("Should let you buy a ticket", function(done) {
+    Conference.deployed().then((conference) => {
+      var ticketPrice = web3.toWei(.05, 'ether'); // Web3.js provides convenience methods for converting ether to/from Wei
+      // recommend keeping things in Wei in your code until users see it
+      var initialBalance = web3.eth.getBalance(conference.address).toNumber();
+      conference.buyTicket({ from: accounts[1], value: ticketPrice })
+      .then(() => {
+         var newBalance = web3.eth.getBalance(conference.address).toNumber();
+         var difference = newBalance - initialBalance;
+         assert.equal(difference, ticketPrice, "Difference should be what was sent");
+         return conference.numRegistrants.call();
+      }).then((num) => {
+         assert.equal(num, 1, "there should be 1 registrant");
+         return conference.registrantsPaid.call(accounts[1]);
+      }).then((amount) => {
+         assert.equal(amount.toNumber(), ticketPrice, "Sender's paid but is not listed");
+         done();
+      }).catch(done);
+    }).catch(done);
+  });
 });

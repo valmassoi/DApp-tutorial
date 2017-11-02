@@ -38,6 +38,7 @@ contract Conference {
   }
   function destroy() public { // so funds not locked in contract forever
     if (msg.sender == owner) {
+      // Remember that funds sent to the contract are in the contract itself until suicide (now selfdestruct) is called.
       selfdestruct(owner); // send funds to owner
     }
   }
