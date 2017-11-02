@@ -24,17 +24,20 @@ contract Conference {
     if (msg.sender != owner) { return; }
     quota = newquota;
   }
-  function refundTicket(address recipient, uint amount) public {
+  function refundTicket(address recipient, uint amount) public returns (bool success) {
+    /* NOTE: Transactions cannot return results to web3.js only other Solidity. */
     if (msg.sender != owner) { return; }
     if (registrantsPaid[recipient] == amount) {
       address myAddress = this; // `this` is the contract address
       if (myAddress.balance >= amount) {
-        recipient.transfer(amount);
+        recipient.transfer(amount); // send
+        Refund(recipient, amount);
         registrantsPaid[recipient] = 0;
         numRegistrants--;
-        Refund(recipient, amount);
+        return true;
       }
-     }
+    }
+    return false;
   }
   function destroy() public { // so funds not locked in contract forever
     if (msg.sender == owner) {
